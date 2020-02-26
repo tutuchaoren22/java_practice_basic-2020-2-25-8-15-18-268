@@ -1,9 +1,26 @@
 package com.thoughtworks.model;
 
-// 为Student类添加一个Alias注解, 表明Student类可以取一个自定义的别名
-public class Student {
+import java.lang.annotation.*;
 
-    // 为age字段添加一个Limit注解, 表明age字段的最小值为1 最大值为140
-    private int age;
-
+@Documented
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@interface Alias {
+    String name() default "";
 }
+
+@Documented
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+@interface Limit {
+    int min() default Integer.MIN_VALUE;
+
+    int max() default Integer.MAX_VALUE;
+}
+
+@Alias(name = "自定义")
+public class Student {
+    @Limit(min = 1, max = 140)
+    private int age;
+}
+
